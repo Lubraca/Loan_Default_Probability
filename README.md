@@ -2,8 +2,14 @@
 
 Production-ready machine learning inference API for predicting the probability of loan default.
 
-This project exposes a trained LightGBM credit risk model through a FastAPI service, fully containerized with Docker and deployed as a stateless API suitable for cloud environments.
+This project exposes a trained LightGBM credit risk model through a FastAPI service, designed with a strict separation between training and inference, reproducible preprocessing, and stateless deployment. The service is fully containerized with Docker and suitable for cloud-native environments.
 
+The focus of this repository is **model serving and production architecture**, including artifact management, feature consistency, and API reliability.
+
+The research repository containing exploratory analysis, feature engineering experiments, and modeling decisions is available here:
+https://github.com/Lubraca/Supervised_ML_Models/tree/main/Classification/Loan_Default_Prediction/BR-Macro-Enhanced_Credit_Default
+
+This repository demonstrates production ML engineering practices rather than model performance optimization.
 ---
 
 ## Live Deployment
@@ -180,7 +186,7 @@ The application listens on the port provided by the environment (`$PORT`), makin
 ## Notes
 
 - This repository contains **only inference logic**.  
-- Training, feature exploration, and experimentation live in a separate research repository (https://github.com/Lubraca/Supervised_ML_Models/tree/main/Classification/Loan_Default_Prediction/BR-Macro-Enhanced_Credit_Default).  
+- Training, feature exploration, and experimentation live in a separate research repository ().  
 - Model artifacts are versioned to guarantee reproducibility.  
 - No sensitive data or credentials are included.  
 
