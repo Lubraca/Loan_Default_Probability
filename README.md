@@ -6,15 +6,24 @@ This project exposes a trained LightGBM credit risk model through a FastAPI serv
 
 ---
 
+## Live Deployment
+
+The API is publicly available and deployed on **Render**.
+
+**Base URL**  
+https://credit-risk-api-ho5h.onrender.com
+
+---
+
 ## Overview
 
 The API receives raw loan application data and returns the probability of default (`TARGET = 1`).  
 It reproduces the same preprocessing pipeline used during model training, including:
 
-- Feature engineering
-- Target encoding for categorical variables
-- Missing value imputation
-- Feature alignment with the final trained model
+- Feature engineering  
+- Target encoding for categorical variables  
+- Missing value imputation  
+- Feature alignment with the final trained model  
 
 The service is optimized for **inference only** and does not include training logic.
 
@@ -22,13 +31,13 @@ The service is optimized for **inference only** and does not include training lo
 
 ## Tech Stack
 
-- Python
-- FastAPI
-- LightGBM
-- scikit-learn
-- Docker
-- Uvicorn
-- Pydantic v2
+- Python  
+- FastAPI  
+- LightGBM  
+- scikit-learn  
+- Docker  
+- Uvicorn  
+- Pydantic v2  
 
 ---
 
@@ -52,7 +61,7 @@ The service is optimized for **inference only** and does not include training lo
 ├── docker-compose.yml # Local development
 ├── .gitignore
 └── README.md
-
+```
 
 ---
 
@@ -60,65 +69,98 @@ The service is optimized for **inference only** and does not include training lo
 
 ### Health Check
 
+```
 GET /health
+```
 
-Returns service and model readiness.
+**Full URL**
+```
+https://credit-risk-api-ho5h.onrender.com/health
+```
 
 Example response:
+```json
 {
   "status": "ok",
   "model_ready": true
 }
+```
 
 ---
 
 ### Predict Default Probability
 
+```
 POST /predict
+```
 
-Returns the probability of loan default for a single application.
+**Full URL**
+```
+https://credit-risk-api-ho5h.onrender.com/predict
+```
 
-Example payload:
+---
+
+### Example Request (cURL)
+
+```bash
+curl -X POST "https://credit-risk-api-ho5h.onrender.com/predict" \
+  -H "Content-Type: application/json" \
+  -d @- <<'JSON'
 {
   "SK_ID_CURR": 100001,
   "NAME_CONTRACT_TYPE": "Cash loans",
   "CODE_GENDER": "M",
   "AMT_INCOME_TOTAL": 120000,
   "AMT_CREDIT": 450000,
+  "AMT_ANNUITY": 25000,
   "DAYS_BIRTH": -16000,
   "DAYS_EMPLOYED": -2000,
+  "DAYS_ID_PUBLISH": -3000,
+  "DAYS_REGISTRATION": -5000,
+  "DAYS_LAST_PHONE_CHANGE": -800,
   "EXT_SOURCE_1": 0.45,
   "EXT_SOURCE_2": 0.51,
   "EXT_SOURCE_3": 0.48,
   "ORGANIZATION_TYPE": "Business Entity Type 3"
 }
+JSON
+```
 
-Example response:
+---
+
+### Example Response
+
+```json
 {
   "SK_ID_CURR": 100001,
-  "probability_of_default": 0.1834
+  "probability_of_default": 0.08454134770124873
 }
+```
+
+**Note:** Derived features (e.g. ratios) are computed server-side when sufficient raw inputs are provided.
 
 ---
 
 ## Running Locally with Docker
 
-Build the image:
-
+```bash
 docker build -t credit-risk-api .
-
-Run the container:
-
 docker run -p 8000:8000 credit-risk-api
+```
 
 The API will be available at:
+```
 http://localhost:8000
+```
 
 ---
 
 ## Running with Docker Compose (Development)
 
+```bash
 docker compose up --build
+```
 
 ---
 
@@ -126,10 +168,10 @@ docker compose up --build
 
 This service is designed to be deployed as a Docker-based Web Service on platforms such as:
 
-- Render
-- Fly.io
-- Railway
-- AWS ECS / Fargate
+- Render  
+- Fly.io  
+- Railway  
+- AWS ECS / Fargate  
 
 The application listens on the port provided by the environment (`$PORT`), making it cloud-compatible by default.
 
@@ -137,10 +179,10 @@ The application listens on the port provided by the environment (`$PORT`), makin
 
 ## Notes
 
-- This repository contains only inference logic.
-- Training, feature exploration, and experimentation live in a separate research repository.
-- Model artifacts are versioned to guarantee reproducibility.
-- No sensitive data or credentials are included.
+- This repository contains **only inference logic**.  
+- Training, feature exploration, and experimentation live in a separate research repository (https://github.com/Lubraca/Supervised_ML_Models/tree/main/Classification/Loan_Default_Prediction/BR-Macro-Enhanced_Credit_Default).  
+- Model artifacts are versioned to guarantee reproducibility.  
+- No sensitive data or credentials are included.  
 
 ---
 
