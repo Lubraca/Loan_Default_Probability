@@ -34,6 +34,7 @@ The service is optimized for **inference only** and does not include training lo
 
 ## Project Structure
 
+```text
 .
 ├── src/
 │   ├── main.py        # FastAPI application
@@ -51,6 +52,7 @@ The service is optimized for **inference only** and does not include training lo
 ├── docker-compose.yml # Local development
 ├── .gitignore
 └── README.md
+
 
 ---
 
